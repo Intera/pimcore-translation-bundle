@@ -14,6 +14,9 @@ class MicrosoftProvider extends AbstractProvider
 {
     protected string $url = 'https://api.cognitive.microsofttranslator.com/';
 
+    /**
+     * @inheritDoc
+     */
     public function translate(string $data, string $targetLanguage): string
     {
         try {

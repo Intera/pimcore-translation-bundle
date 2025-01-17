@@ -14,6 +14,9 @@ class GoogleProvider extends AbstractProvider
 {
     protected string $url = 'https://www.googleapis.com/';
 
+    /**
+     * @inheritDoc
+     */
     public function translate(string $data, string $targetLanguage): string
     {
         try {
@@ -32,7 +35,7 @@ class GoogleProvider extends AbstractProvider
             $body = $response->getBody()->getContents();
             $data = json_decode($body, true);
 
-            if ($data['error']) {
+            if ($data['error'] ?? false) {
                 throw new TranslationException();
             }
         } catch (\Throwable $exception) {

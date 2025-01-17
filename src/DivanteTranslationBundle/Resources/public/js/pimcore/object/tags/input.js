@@ -15,7 +15,7 @@ pimcore.registerNS("pimcore.object.tags.input");
 pimcore.object.tags.input = Class.create(pimcore.object.tags.input, {
 
     getLayoutEdit: function () {
-        var input = {
+        let input = {
             fieldLabel: this.fieldConfig.title,
             name: this.fieldConfig.name,
             componentCls: "object_field",
@@ -50,7 +50,7 @@ pimcore.object.tags.input = Class.create(pimcore.object.tags.input, {
 
         if (this.context && this.context.language) {
             this.translateButton = new pimcore.object.elementservice.translateButton(
-                this.object.data.general.o_id,
+                this.object.data.general.id,
                 this.fieldConfig.name,
                 this.component,
                 'input',
@@ -61,7 +61,7 @@ pimcore.object.tags.input = Class.create(pimcore.object.tags.input, {
         }
 
         if (this.fieldConfig.showCharCount) {
-            var charCount = Ext.create("Ext.Panel", {
+            const charCount = Ext.create("Ext.Panel", {
                 bodyStyle: '',
                 margin: '0 0 0 0',
                 bodyCls: 'char_count',

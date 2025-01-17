@@ -22,6 +22,9 @@ class DeeplProvider extends AbstractProvider implements FormalityProviderInterfa
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function translate(string $data, string $targetLanguage): string
     {
         try {

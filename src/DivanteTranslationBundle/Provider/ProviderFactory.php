@@ -23,6 +23,9 @@ class ProviderFactory
         $this->formality = $formality;
     }
 
+    /**
+     * @throws TranslationProviderNotImplemented
+     */
     public function get(string $name): ProviderInterface
     {
         /** @var ProviderInterface $provider */
