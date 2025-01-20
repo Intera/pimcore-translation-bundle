@@ -20,6 +20,10 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <directory suffix=".php">src/DivanteTranslationBundle/DependencyInjection</directory>
+            <file>src/DivanteTranslationBundle/DivanteTranslationBundle.php</file>
+        </exclude>
     </coverage>
 
     <php>

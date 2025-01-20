@@ -8,6 +8,9 @@ declare(strict_types=1);
 
 namespace DivanteTranslationBundle\Exception;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class TranslationException extends \Exception
 {
 }

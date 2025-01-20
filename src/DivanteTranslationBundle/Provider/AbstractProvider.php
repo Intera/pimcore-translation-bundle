@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace DivanteTranslationBundle\Provider;
 
 use DivanteTranslationBundle\Http\HttpClientInterface;
-use GuzzleHttp\Client;
 
 abstract class AbstractProvider implements ProviderInterface
 {
@@ -26,12 +25,5 @@ abstract class AbstractProvider implements ProviderInterface
         $this->apiKey = $apiKey;
 
         return $this;
-    }
-
-    protected function getHttpClient(): Client
-    {
-        return new Client([
-            'base_uri' => $this->url,
-        ]);
     }
 }
