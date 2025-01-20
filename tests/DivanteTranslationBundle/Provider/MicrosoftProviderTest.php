@@ -15,11 +15,13 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
+use Tests\DivanteTranslationBundle\Helper\Builder\TranslationProviderBuilder;
 
 final class MicrosoftProviderTest extends TestCase
 {
     public function testTranslate(): void
     {
+        // arrange
         $response = [
             [
                 'translations' => [
@@ -29,23 +31,28 @@ final class MicrosoftProviderTest extends TestCase
                 ],
             ],
         ];
+        $provider = $this->createProvider(200, $response);
+        $provider->setApiKey('testApiKry');
 
-        $this->assertSame('test', $this->createProvider($response)->translate('test', 'en'));
+
+        // act
+        $actual = $provider->translate('test', 'en');
+
+
+        // assert
+        $this->assertSame('test', $actual);
     }
 
-    private function createProvider(array $response): ProviderInterface
+    /**
+     * @return MicrosoftProvider
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
+    private function createProvider(int $statusCode, array $response): ProviderInterface
     {
-        $mock = new MockHandler([
-            new Response(200, [], json_encode($response)),
-        ]);
-        $handlerStack = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handlerStack]);
-        $provider = $this->getMockBuilder(MicrosoftProvider::class)
-            ->onlyMethods(['getHttpClient'])
-            ->getMock();
-        $provider->method('getHttpClient')->willReturn($client);
-        $provider->setApiKey('test');
+        $builder = new TranslationProviderBuilder('');
 
-        return $provider;
+        return $builder->createGuzzleClientStub($statusCode, $response)
+            ->createHttpClient()
+            ->createProvider(MicrosoftProvider::class);
     }
 }

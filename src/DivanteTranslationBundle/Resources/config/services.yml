@@ -24,3 +24,7 @@ services:
             $apiKey: '%divante_translation.api_key%'
             $providers: !tagged translation_bundle.provider
             $formality: '%divante_translation.formality%'
+
+    DivanteTranslationBundle\Http\:
+      resource: '../../Http'
+

@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace DivanteTranslationBundle\Provider;
 
 use DivanteTranslationBundle\Exception\TranslationException;
+use Symfony\Component\HttpFoundation\Request;
 
 class GoogleProvider extends AbstractProvider
 {
@@ -19,26 +20,20 @@ class GoogleProvider extends AbstractProvider
      */
     public function translate(string $data, string $targetLanguage): string
     {
-        try {
-            $response = $this->getHttpClient()->request(
-                'GET',
-                'language/translate/v2',
-                [
-                    'query' => [
-                        'key' => $this->apiKey,
-                        'q' => $data,
-                        'source' => '',
-                        'target' => locale_get_primary_language($targetLanguage),
-                    ]
+        $data = $this->client->request(
+          Request::METHOD_GET,
+            'language/translate/v2',
+            [
+                'query' => [
+                    'key' => $this->apiKey,
+                    'q' => $data,
+                    'source' => '',
+                    'target' => locale_get_primary_language($targetLanguage),
                 ]
-            );
-            $body = $response->getBody()->getContents();
-            $data = json_decode($body, true);
+            ]
+        );
 
-            if ($data['error'] ?? false) {
-                throw new TranslationException();
-            }
-        } catch (\Throwable $exception) {
+        if ($data['error'] ?? false) {
             throw new TranslationException();
         }
 
