@@ -1,8 +1,7 @@
 pimcore.registerNS("pimcore.object.elementservice.x");
 
 pimcore.object.elementservice.translateButton = function (id, fieldName, component, type, lang) {
-    console.log(id);
-    var provider = pimcore.globalmanager.get('translationBundle_provider');
+    const provider = pimcore.globalmanager.get('translationBundle_provider');
 
     if (provider === 'deepl' || provider === 'deepl_free') {
         return new Ext.Button({
@@ -48,8 +47,6 @@ pimcore.object.elementservice.translateButton = function (id, fieldName, compone
 };
 
 function handleTranslationRequest(id, fieldName, component, type, lang, formality) {
-    console.log('handleTranslationRequest');
-    console.log(id);
     Ext.Ajax.request({
         url: "/admin/object/translate-field",
         method: "GET",
@@ -61,12 +58,12 @@ function handleTranslationRequest(id, fieldName, component, type, lang, formalit
             formality: formality
         },
         success: function (response) {
-            var res = Ext.decode(response.responseText);
+            const res = Ext.decode(response.responseText);
 
             if (res.success) {
                 switch (type) {
                     case 'wysiwyg':
-                        CKEDITOR.instances[component.editableDivId].setData(res.data);
+                        tinymce.activeEditor.setContent(res.data);
                         break;
                     case 'input':
                         component.setRawValue(res.data);

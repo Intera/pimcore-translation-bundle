@@ -37,7 +37,7 @@ pimcore.object.tags.textarea = Class.create(pimcore.object.tags.abstract, {
             return null;
         }
         // TEXTAREA
-        if (field.type == "textarea") {
+        if (field.type === "textarea") {
            return new Ext.form.TextArea(editorConfig);
         }
     },
