@@ -16,6 +16,16 @@
         </testsuite>
     </testsuites>
 
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">src/DivanteTranslationBundle/DependencyInjection</directory>
+            <file>src/DivanteTranslationBundle/DivanteTranslationBundle.php</file>
+        </exclude>
+    </coverage>
+
     <php>
         <env name="APP_ENV" value="test" />
     </php>

@@ -26,12 +26,18 @@ Supports input, textarea and wysiwyg fields.
 
 ## Compatibility
 
-This module is compatible with Pimcore 5.5.0 and higher. Including Pimcore 10.
-
+This module is compatible with Pimcore 11.5.0 and higher.
 ## Installing/Getting started
-
+ - clone the repository
 ```bash
 composer require divante-ltd/pimcore-translation-bundle
+```
+- register bundle (config/bundles.php file)
+```php
+return [
+    ...
+    DivanteTranslationBundle\DivanteTranslationBundle::class => ['all' => true],
+];
 ```
 
 ## Configuration
@@ -58,11 +64,6 @@ Possible options are:\
 "default" (default)\
 "more" - for a more formal language\
 "less" - for a more informal language\
-
-### Enable the Bundle:
-```bash
-bin/console pimcore:bundle:enable DivanteTranslationBundle
-```
 
 ## How to add new provider
 Create Provider and implement interface 

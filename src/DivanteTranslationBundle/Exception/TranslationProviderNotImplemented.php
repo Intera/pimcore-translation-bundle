@@ -10,6 +10,9 @@ namespace DivanteTranslationBundle\Exception;
 
 use Throwable;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class TranslationProviderNotImplemented extends \Exception
 {
     public function __construct($provider)

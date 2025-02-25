@@ -1,7 +1,7 @@
 pimcore.registerNS("pimcore.object.elementservice.x");
 
 pimcore.object.elementservice.translateButton = function (id, fieldName, component, type, lang, elementContext) {
-    var provider = pimcore.globalmanager.get('translationBundle_provider');
+    const provider = pimcore.globalmanager.get('translationBundle_provider');
 
     if (provider === 'deepl' || provider === 'deepl_free') {
         return new Ext.Button({
@@ -67,12 +67,12 @@ function handleTranslationRequest(id, fieldName, component, type, lang, formalit
         method: "GET",
         params: params,
         success: function (response) {
-            var res = Ext.decode(response.responseText);
+            const res = Ext.decode(response.responseText);
 
             if (res.success) {
                 switch (type) {
                     case 'wysiwyg':
-                        CKEDITOR.instances[component.editableDivId].setData(res.data);
+                        tinymce.activeEditor.setContent(res.data);
                         break;
                     case 'input':
                         component.setRawValue(res.data);
@@ -87,4 +87,3 @@ function handleTranslationRequest(id, fieldName, component, type, lang, formalit
         }
     });
 }
-

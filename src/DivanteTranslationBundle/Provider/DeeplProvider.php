@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace DivanteTranslationBundle\Provider;
 
-use DivanteTranslationBundle\Exception\TranslationException;
+use Symfony\Component\HttpFoundation\Request;
 
 class DeeplProvider extends AbstractProvider implements FormalityProviderInterface
 {
@@ -22,29 +22,25 @@ class DeeplProvider extends AbstractProvider implements FormalityProviderInterfa
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function translate(string $data, string $targetLanguage): string
     {
-        try {
-            $response = $this->getHttpClient()->request(
-                'POST',
-                'v2/translate',
-                [
-                    'query' => [
-                        'auth_key' => $this->apiKey,
-                        'text' => $data,
-                        'target_lang' => locale_get_primary_language($targetLanguage),
-                        'formality' => $this->formality
-                    ]
+        $data = $this->client->request(
+            Request::METHOD_POST,
+            'v2/translate',
+            [
+                'query' => [
+                    'auth_key' => $this->apiKey,
+                    'text' => $data,
+                    'target_lang' => locale_get_primary_language($targetLanguage),
+                    'formality' => $this->formality
                 ]
-            );
+            ]
+        );
 
-            $body = $response->getBody()->getContents();
-            $data = json_decode($body, true);
-        } catch (\Throwable $exception) {
-            throw new TranslationException($exception->getMessage());
-        }
-
-        return $data['translations'][0]['text'];
+        return $data['translations'][0]['text'] ?? '';
     }
 
     public function getName(): string

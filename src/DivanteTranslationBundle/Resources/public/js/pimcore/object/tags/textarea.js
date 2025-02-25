@@ -23,7 +23,7 @@ pimcore.object.tags.textarea = Class.create(pimcore.object.tags.abstract, {
     },
 
     getGridColumnEditor: function(field) {
-        var editorConfig = {};
+        let editorConfig = {};
 
         if (field.config) {
             if (field.config.width) {
@@ -37,7 +37,7 @@ pimcore.object.tags.textarea = Class.create(pimcore.object.tags.abstract, {
             return null;
         }
         // TEXTAREA
-        if (field.type == "textarea") {
+        if (field.type === "textarea") {
            return new Ext.form.TextArea(editorConfig);
         }
     },
@@ -56,9 +56,9 @@ pimcore.object.tags.textarea = Class.create(pimcore.object.tags.abstract, {
             this.fieldConfig.height = 250;
         }
 
-        var labelWidth = this.fieldConfig.labelWidth ? this.fieldConfig.labelWidth : 100;
+        const labelWidth = this.fieldConfig.labelWidth ? this.fieldConfig.labelWidth : 100;
 
-        var conf = {
+        let conf = {
             name: this.fieldConfig.name,
             width: this.fieldConfig.width,
             height: this.fieldConfig.height,
@@ -72,7 +72,7 @@ pimcore.object.tags.textarea = Class.create(pimcore.object.tags.abstract, {
 
         if (this.context && this.context.language) {
             this.translateButton = new pimcore.object.elementservice.translateButton(
-                this.object.data.general.o_id,
+                this.object.data.general.id,
                 this.fieldConfig.name,
                 this,
                 'textarea',
@@ -96,7 +96,7 @@ pimcore.object.tags.textarea = Class.create(pimcore.object.tags.abstract, {
         this.component = new Ext.form.TextArea(conf);
 
         if(this.fieldConfig.showCharCount) {
-            var charCount = Ext.create("Ext.Panel", {
+            const charCount = Ext.create("Ext.Panel", {
                 bodyStyle: '',
                 margin: '0 0 0 0',
                 bodyCls: 'char_count',
@@ -152,7 +152,7 @@ pimcore.object.tags.textarea = Class.create(pimcore.object.tags.abstract, {
 
 
     getLayoutShow: function () {
-        var layout = this.getLayoutEdit();
+        const layout = this.getLayoutEdit();
         this.component.setReadOnly(true);
         return layout;
     },
