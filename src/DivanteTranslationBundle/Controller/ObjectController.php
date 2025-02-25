@@ -37,6 +37,7 @@ final class ObjectController extends FrontendController
      */
     public function translateFieldAction(Request $request, ProviderFactory $providerFactory): JsonResponse
     {
+        $result = '';
         try {
             $object = DataObject::getById($request->get('sourceId'));
 
@@ -45,11 +46,38 @@ final class ObjectController extends FrontendController
             }
 
             $lang = $request->get('lang');
-            $fieldName = 'get' . ucfirst($request->get('fieldName'));
+            $field = $request->get('fieldName');
+            $formality = $request->get('formality');
 
-            $data = $object->$fieldName($lang) ?: $object->$fieldName($this->sourceLanguage);
+            $block = $request->get('block');
+            $objectBrick = $request->get('objectBrick');
+            if ($block) {
+                $blockElementIndex = (int)$request->get('blockElementIndex');
+                if (!$blockElementIndex || $blockElementIndex == '') {
+                    throw new \Exception('Invalid request, "blockElementIndex" not secified');
+                }
 
-            if (!$data) {
+                $block = $object->get($block)[$blockElementIndex];
+
+                /** @var DataObject\Localizedfield $localizedfield */
+                $localizedfield = $block['localizedfields']->getData();
+                $data = $localizedfield->getLocalizedValue($field, $lang) ?:
+                    $localizedfield->getLocalizedValue($field, $this->sourceLanguage);
+            } else if($objectBrick) {
+                $objectBrickField = $request->get('objectBrickField');
+                if (!$objectBrickField || $objectBrickField == '') {
+                    throw new \Exception('Invalid request, "objectBrickField" not secified');
+                }
+
+                /** @var DataObject\Objectbrick $objectBrick */
+                $objectBrick = $object->get($field)->get($objectBrick);
+                $data = $objectBrick->get($objectBrickField, $lang) ?:
+                    $objectBrick->get($objectBrickField, $this->sourceLanguage);
+            } else {
+                $data = $object->get($field, $lang) ?: $object->get($field, $this->sourceLanguage);
+            }
+
+            if (!$data || $data == '') {
                 return $this->json([
                     'success' => false,
                     'message' => 'Data are empty',
@@ -58,14 +86,15 @@ final class ObjectController extends FrontendController
 
             $provider = $providerFactory->get($this->provider);
             if (
-                $request->get('formality') &&
+                $formality &&
                 $provider instanceof FormalityProviderInterface
             ) {
-                $provider->setFormality($request->get('formality'));
+                $provider->setFormality($formality);
             }
 
             $data = strip_tags($data);
-            $data = $provider->translate($data, $lang);
+            $result = $provider->translate($data, $lang);
+
         } catch (\Throwable $exception) {
             return $this->json([
                 'success' => false,
@@ -75,7 +104,7 @@ final class ObjectController extends FrontendController
 
         return $this->json([
             'success' => true,
-            'data' => $data,
+            'data' => $result,
         ]);
     }
 }
