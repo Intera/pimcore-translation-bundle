@@ -5,11 +5,9 @@ namespace DivanteTranslationBundle\Controller;
 use DivanteTranslationBundle\Provider\ProviderFactory;
 use Pimcore\Controller\FrontendController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @Route("/admin")
- */
+#[Route('/admin')]
 final class ProviderController extends FrontendController
 {
     private string $sourceLanguage;
@@ -21,9 +19,7 @@ final class ProviderController extends FrontendController
         $this->provider = $provider;
     }
 
-    /**
-     * @Route("/translate-provider", methods={"GET"})
-     */
+    #[Route('/translate-provider', methods: ['GET'])]
     public function translationProviderInfoAction(): JsonResponse
     {
         return $this->json([

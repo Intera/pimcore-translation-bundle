@@ -16,11 +16,9 @@ use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @Route("/admin/object")
- */
+#[Route('/admin/object')]
 final class ObjectController extends FrontendController
 {
     private string $sourceLanguage;
@@ -32,9 +30,7 @@ final class ObjectController extends FrontendController
         $this->provider = $provider;
     }
 
-    /**
-     * @Route("/translate-field", methods={"GET"})
-     */
+    #[Route('/translate-field', methods: ['GET'])]
     public function translateFieldAction(Request $request, ProviderFactory $providerFactory): JsonResponse
     {
         $result = '';
