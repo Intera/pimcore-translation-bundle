@@ -35,7 +35,7 @@ final class ObjectController extends FrontendController
     {
         $result = '';
         try {
-            $object = DataObject::getById($request->get('sourceId'));
+            $object = DataObject::getById((int)$request->get('sourceId'));
 
             if (!$object) {
                 throw new NotFoundHttpException('Object not found');
